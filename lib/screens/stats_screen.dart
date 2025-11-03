@@ -139,7 +139,7 @@ class _StatsScreenState extends State<StatsScreen> {
               children: [
                 _metric('Interactions', total.toString()),
                 const SizedBox(width: 16),
-                _metric('I initiated', '${d.mine} (${minePct}%)'),
+                _metric('I initiated', '${d.mine} ($minePct%)'),
                 const SizedBox(width: 16),
                 _metric('They initiated', '${d.theirs} (${theirsPct}%)'),
               ],
@@ -173,7 +173,7 @@ class _StatsScreenState extends State<StatsScreen> {
     return ListTile(
       leading: CircleAvatar(child: Text(ps.person.name.isNotEmpty ? ps.person.name[0].toUpperCase() : '?')),
       title: Text(ps.person.name),
-      subtitle: Text('Total: $total • I: ${ps.mine} (${minePct}%) • Last: $last'),
+  subtitle: Text('Total: $total • I: ${ps.mine} ($minePct%) • Last: $last'),
       onTap: () => _showPersonBreakdown(ps),
     );
   }

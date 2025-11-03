@@ -14,11 +14,11 @@ class DeviceCalendarService {
     } catch (_) {}
 
     // Try permission_handler for a unified UX on Android/iOS
-    final calStatus = await Permission.calendar.request();
-    if (calStatus.isGranted) return true;
     final fullStatus = await Permission.calendarFullAccess.request();
     if (fullStatus.isGranted) return true;
-    if (calStatus.isPermanentlyDenied || fullStatus.isPermanentlyDenied) {
+    final writeOnly = await Permission.calendarWriteOnly.request();
+    if (writeOnly.isGranted) return true;
+    if (fullStatus.isPermanentlyDenied || writeOnly.isPermanentlyDenied) {
       if (kDebugMode) debugPrint('Calendar permission permanently denied');
       return false;
     }

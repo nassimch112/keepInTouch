@@ -58,8 +58,8 @@ class SettingsService {
 
   static Future<void> setThemeColors({required Color background, required Color card}) async {
     final sp = await SharedPreferences.getInstance();
-    await sp.setInt(_kBgColor, background.value);
-    await sp.setInt(_kCardColor, card.value);
+    await sp.setInt(_kBgColor, background.toARGB32());
+    await sp.setInt(_kCardColor, card.toARGB32());
   }
 
   // Haptics

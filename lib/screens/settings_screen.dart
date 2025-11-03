@@ -98,10 +98,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onChanged: (v) async {
             if (v) {
               final ok = await DeviceCalendarService.ensurePermissions();
+              if (!mounted) return;
               if (ok) {
                 setState(() => _deviceCalendar = true);
               } else {
-                if (!mounted) return;
                 setState(() => _deviceCalendar = false);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -198,10 +198,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _presetButton(String label, Color bg, Color card) {
-    final isSel = _bg.value == bg.value && _card.value == card.value;
+    final isSel = _bg == bg && _card == card;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: isSel ? bg.withOpacity(0.25) : null,
+        backgroundColor: isSel ? bg.withValues(alpha: 0.25) : null,
       ),
       onPressed: () => setState(() {
         _bg = bg;

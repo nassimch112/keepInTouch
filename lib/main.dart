@@ -9,6 +9,7 @@ import 'services/ui_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 import 'screens/calendar_screen.dart';
 import 'screens/stats_screen.dart';
 
@@ -184,20 +185,26 @@ class _AppState extends State<App> {
                   TargetPlatform.android: SharedAxisPageTransitionsBuilder(transitionType: SharedAxisTransitionType.scaled),
                 }),
               ),
-              home: WillPopScope(
-        onWillPop: () async {
+              home: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (didPop) return;
           // If not on Home tab, go back to Home instead of exiting
           if (_index != 0) {
             setState(() => _index = 0);
-            return false;
+            return;
           }
           final now = DateTime.now();
           if (_lastBack == null || now.difference(_lastBack!) > const Duration(seconds: 2)) {
             _lastBack = now;
-            ScaffoldMessenger.of(_navKey.currentContext!).showSnackBar(const SnackBar(content: Text('Press back again to exit')));
-            return false;
+            final ctx = _navKey.currentContext;
+            if (ctx != null) {
+              ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('Press back again to exit')));
+            }
+            return;
           }
-          return true; // exit app
+          // Exit app on second back
+          await SystemNavigator.pop();
         },
         child: Scaffold(
           extendBodyBehindAppBar: true,

@@ -36,7 +36,7 @@ void backgroundDispatcher() {
 
 class BackgroundScheduler {
   static Future<void> init() async {
-    await Workmanager().initialize(backgroundDispatcher, isInDebugMode: false);
+    await Workmanager().initialize(backgroundDispatcher);
   }
 
   static Future<void> scheduleDaily() async {

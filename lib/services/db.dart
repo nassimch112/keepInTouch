@@ -1,13 +1,12 @@
 // Placeholder DB service using sqflite
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
 import '../models.dart';
 
 class AppDb {
   static Database? _db;
   static Future<Database> get instance async {
     if (_db != null) return _db!;
-    final path = p.join(await getDatabasesPath(), 'keepintouch.db');
+  final path = '${await getDatabasesPath()}/keepintouch.db';
     _db = await openDatabase(path, version: 4, onCreate: (db, v) async {
       await db.execute('''
         CREATE TABLE person(

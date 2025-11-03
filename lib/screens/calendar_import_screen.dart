@@ -85,8 +85,9 @@ class _CalendarImportScreenState extends State<CalendarImportScreen> {
         SnackBar(content: Text('Import failed: $e')),
       );
     } finally {
-      if (!mounted) return;
-      setState(() => _importing = false);
+      if (mounted) {
+        setState(() => _importing = false);
+      }
     }
   }
 

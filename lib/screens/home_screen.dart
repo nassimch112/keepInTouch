@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _personCard(Person p, {bool isDue = false, bool compact = false}) {
     final next = _nextDueFor(p);
-    final borderSide = BorderSide(color: Colors.white.withOpacity(0.08));
+  final borderSide = BorderSide(color: Colors.white.withValues(alpha: 0.08));
     final last = p.lastInteractionAt != null ? ' • Last: ${DateFormat('MMM d').format(p.lastInteractionAt!)}' : '';
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onLongPress: () => _openEditPersonSheet(p),
       child: Card(
         elevation: compact ? 1.5 : 3,
-        shadowColor: Colors.black.withOpacity(0.35),
+  shadowColor: Colors.black.withValues(alpha: 0.35),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: borderSide),
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: compact ? 4 : 10),
         child: Padding(padding: EdgeInsets.all(compact ? 10 : 14), child: content),
@@ -367,8 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final color = _tagColor(label);
     return Chip(
       label: Text(label),
-      backgroundColor: color.withOpacity(0.15),
-      side: BorderSide(color: color.withOpacity(0.35)),
+      backgroundColor: color.withValues(alpha: 0.15),
+      side: BorderSide(color: color.withValues(alpha: 0.35)),
       labelStyle: TextStyle(color: color),
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -439,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 8),
                             TextField(
                               decoration: InputDecoration(
-                                fillColor: Colors.black.withOpacity(0.15),
+                                fillColor: Colors.black.withValues(alpha: 0.15),
                                 filled: true,
                                 prefixIcon: const Icon(Icons.search),
                                 hintText: 'Search name, phone, tag',

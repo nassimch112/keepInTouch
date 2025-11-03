@@ -1,5 +1,8 @@
 # KeepInTouch
 
+[![Download APK](https://img.shields.io/badge/Download-APK-3DDC84?logo=android&logoColor=white)](https://github.com/nassimch112/keepInTouch/releases/latest/download/app-release.apk)
+[![Latest Release](https://img.shields.io/github/v/release/nassimch112/keepInTouch?display_name=tag&sort=semver)](https://github.com/nassimch112/keepInTouch/releases/latest)
+
 Stay in touch with the people that matter. KeepInTouch is a local‑first, privacy‑respecting reminder app that helps you keep relationships warm without the noise.
 
 • Local data (SQLite). • Smart daily nudges. • Gentle snooze. • Beautiful calendar. • Optional read‑only device calendar overlay. 
@@ -56,4 +59,4 @@ Privacy
 Built by Nassim, with GitHub Copilot assisting on implementation, UX polish, and calendar integration.
 
 ## License
-Choose a license (e.g., MIT) and add a LICENSE file to this folder.
+MIT — see [LICENSE](./LICENSE).

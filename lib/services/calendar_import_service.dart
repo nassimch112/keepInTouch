@@ -9,7 +9,7 @@ import 'device_calendar_service.dart';
 /// Contract
 /// - Inputs: date range [start, end], optional selected calendar IDs
 /// - Behavior: fetch device events, map to people by name fuzzy match, create interactions
-/// - Deduplication: use interaction.externalId = 'device:<calendarId>:<eventId>' unique index
+/// - Deduplication: use interaction.externalId = `device:{calendarId}:{eventId}` unique index
 /// - Outputs: summary with counts
 class CalendarImportSummary {
   final int scanned;
@@ -76,7 +76,7 @@ class CalendarImportService {
           // Try match by attendees' emails/phones or event title
           Map<String, Object?>? person;
           // attempt by phone in description/location
-          final blob = ((e.description ?? '') + ' ' + (e.location ?? '')).toLowerCase();
+          final blob = ('${e.description ?? ''} ${e.location ?? ''}').toLowerCase();
           for (final entry in byPhone.entries) {
             if (blob.contains(entry.key)) {
               person = entry.value;

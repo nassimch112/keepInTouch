@@ -53,12 +53,32 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
         run: flutter build apk --release --no-tree-shake-icons
 
+      - name: Determine tag name
+        id: tag
+        run: |
+          VERSION=$(grep '^version:' "$WORKDIR/pubspec.yaml" | sed 's/version: //; s/+.*$//')
+          echo "TAG_NAME=v$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create tag if missing (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists"
+          else
+            echo "Creating tag $TAG_NAME"
+            git tag "$TAG_NAME"
+            git push origin "$TAG_NAME"
+          fi
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ env.WORKDIR }}/build/app/outputs/flutter-apk/*.apk
             ${{ env.WORKDIR }}/build/app/outputs/bundle/release/*.aab
+          tag_name: ${{ env.TAG_NAME }}
+          overwrite: true
           draft: false
           prerelease: false
         env:

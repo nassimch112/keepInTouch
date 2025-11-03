@@ -352,7 +352,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
-            'Every ${p.cadenceDays} days${p.tags.isNotEmpty ? ' · ' + p.tags.take(3).join(', ') : ''}',
+            'Every ${p.cadenceDays} days${p.tags.isNotEmpty ? ' · ${p.tags.take(3).join(', ')}' : ''}',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -402,13 +402,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
           if (action == 'snooze_7d') {
             final repo = await _repo;
             await repo.snooze(p.id!, const Duration(days: 7));
-            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Snoozed')));
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Snoozed')));
             await _load();
           } else if (action == 'done') {
             if (UiState.instance.haptics.value) HapticFeedback.lightImpact();
             final repo = await _repo;
             await repo.markDone(p.id!, initiator: 'me');
-            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Marked done')));
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Marked done')));
             await _load();
           }
         },

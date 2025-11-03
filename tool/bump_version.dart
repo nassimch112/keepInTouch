@@ -19,7 +19,9 @@ void main(List<String> args) {
       final semver = parts[0];
       final build = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
       final sv = semver.split('.').map((e) => int.tryParse(e) ?? 0).toList();
-      while (sv.length < 3) sv.add(0);
+      while (sv.length < 3) {
+        sv.add(0);
+      }
       var major = sv[0], minor = sv[1], patch = sv[2];
       switch (level) {
         case 'major':
@@ -36,7 +38,7 @@ void main(List<String> args) {
           patch += 1;
       }
       final newBuild = build + 1;
-      final next = 'version: ' + '$major.$minor.$patch' + '+$newBuild';
+      final next = 'version: $major.$minor.$patch+$newBuild';
       lines[i] = next;
       file.writeAsStringSync(lines.join('\n'));
       stdout.writeln('Bumped version to $major.$minor.$patch+$newBuild');
