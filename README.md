@@ -12,7 +12,8 @@ Stay in touch with the people that matter. KeepInTouch is a local‑first, priva
 - Stats: interaction totals, who initiates, and a top‑people leaderboard.
 
 ## Screens
-Add your own screenshots here (recommended sizes: 1080×1920 portrait)
+![collage](https://github.com/user-attachments/assets/b97730b9-1228-4855-9898-61c58581c1bd)
+
 - Home – Due/Upcoming list with search and swipe
 - Calendar – Monthly grid, details panel, and device overlays
 - Stats – Leaderboard and initiator breakdown
