@@ -49,7 +49,7 @@ class _BatchScreenState extends State<BatchScreen> {
           final p = _due[i];
           return ListTile(
             title: Text(p.name),
-            subtitle: Text('Every ${p.cadenceDays} days' + (p.phone != null ? ' • ${p.phone}' : '')),
+            subtitle: Text('Every ${p.cadenceDays} days${p.phone != null ? ' • ${p.phone}' : ''}'),
             trailing: Wrap(spacing: 4, children: [
               if (p.phone != null)
                 IconButton(icon: const Icon(Icons.sms), onPressed: () => launchUrl(Uri.parse('sms:${p.phone}'))),

@@ -121,5 +121,5 @@ flutter_launcher_icons:
     generate: true
     image_path: assets/icon/app_icon.png
   # repository metadata (optional for apps; kept for GitHub visibility)
-repository: https://github.com/yourname/keepintouch
-issue_tracker: https://github.com/yourname/keepintouch/issues
+repository: https://github.com/nassimch112/keepInTouch
+issue_tracker: https://github.com/nassimch112/keepInTouch/issues

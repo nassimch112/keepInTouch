@@ -1,0 +1,66 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump level"
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    env:
+      WORKDIR: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect Flutter project directory
+        run: |
+          if [ -f "pubspec.yaml" ]; then
+            echo "WORKDIR=." >> $GITHUB_ENV
+          elif [ -d "keepintouch" ] && [ -f "keepintouch/pubspec.yaml" ]; then
+            echo "WORKDIR=keepintouch" >> $GITHUB_ENV
+          else
+            echo "pubspec.yaml not found at repo root or ./keepintouch" >&2; exit 1
+          fi
+
+      - name: Setup Flutter (for Dart)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Run bump script
+        working-directory: ${{ env.WORKDIR }}
+        run: |
+          dart tool/bump_version.dart ${{ github.event.inputs.bump }}
+
+      - name: Commit changes
+        run: |
+          cd "$WORKDIR"
+          NEW_VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*$//')
+          echo "New version: $NEW_VERSION"
+          git add pubspec.yaml
+          git commit -m "chore: bump version to $NEW_VERSION"
+          git tag "v$NEW_VERSION"
+
+      - name: Push commit and tag
+        run: |
+          git push --follow-tags

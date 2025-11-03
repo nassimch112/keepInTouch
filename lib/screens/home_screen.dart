@@ -101,14 +101,16 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       showDragHandle: true,
       builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const ListTile(title: Text('Who initiated?')),
-            ListTile(leading: const Icon(Icons.person_outline), title: const Text('I contacted'), onTap: () => Navigator.pop(ctx, 'me')),
-            ListTile(leading: const Icon(Icons.group_outlined), title: const Text('They did'), onTap: () => Navigator.pop(ctx, 'them')),
-            const SizedBox(height: 8),
-          ],
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).padding.bottom + 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ListTile(title: Text('Who initiated?')),
+              ListTile(leading: const Icon(Icons.person_outline), title: const Text('I contacted'), onTap: () => Navigator.pop(ctx, 'me')),
+              ListTile(leading: const Icon(Icons.group_outlined), title: const Text('They did'), onTap: () => Navigator.pop(ctx, 'them')),
+            ],
+          ),
         ),
       ),
     );
@@ -329,26 +331,28 @@ class _HomeScreenState extends State<HomeScreen> {
       showDragHandle: true,
       builder: (ctx) {
         return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const ListTile(title: Text('Snooze')),
-              ListTile(title: const Text('30 minutes'), onTap: () => Navigator.pop(ctx, const Duration(minutes: 30))),
-              ListTile(title: const Text('1 hour'), onTap: () => Navigator.pop(ctx, const Duration(hours: 1))),
-              ListTile(title: const Text('3 hours'), onTap: () => Navigator.pop(ctx, const Duration(hours: 3))),
-              ListTile(title: const Text('Tomorrow'), onTap: () => Navigator.pop(ctx, const Duration(days: 1))),
-              ListTile(
-                title: const Text('Next Sunday'),
-                onTap: () {
-                  final now = DateTime.now();
-                  final daysUntil = (DateTime.sunday - now.weekday + 7) % 7;
-                  final days = daysUntil == 0 ? 7 : daysUntil;
-                  Navigator.pop(ctx, Duration(days: days));
-                },
-              ),
-              ListTile(title: const Text('Next week'), onTap: () => Navigator.pop(ctx, const Duration(days: 7))),
-              const SizedBox(height: 8),
-            ],
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).padding.bottom + 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const ListTile(title: Text('Snooze')),
+                ListTile(title: const Text('30 minutes'), onTap: () => Navigator.pop(ctx, const Duration(minutes: 30))),
+                ListTile(title: const Text('1 hour'), onTap: () => Navigator.pop(ctx, const Duration(hours: 1))),
+                ListTile(title: const Text('3 hours'), onTap: () => Navigator.pop(ctx, const Duration(hours: 3))),
+                ListTile(title: const Text('Tomorrow'), onTap: () => Navigator.pop(ctx, const Duration(days: 1))),
+                ListTile(
+                  title: const Text('Next Sunday'),
+                  onTap: () {
+                    final now = DateTime.now();
+                    final daysUntil = (DateTime.sunday - now.weekday + 7) % 7;
+                    final days = daysUntil == 0 ? 7 : daysUntil;
+                    Navigator.pop(ctx, Duration(days: days));
+                  },
+                ),
+                ListTile(title: const Text('Next week'), onTap: () => Navigator.pop(ctx, const Duration(days: 7))),
+              ],
+            ),
           ),
         );
       },

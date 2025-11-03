@@ -1,32 +1,33 @@
-name: Flutter CI
+name: Release
 
 on:
-  pull_request:
   push:
-    branches: [ main, master ]
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
     env:
-      # Default to repo root; will be overwritten to 'keepintouch' if that subfolder exists
       WORKDIR: .
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Detect Flutter project directory
-        id: detect
         run: |
           if [ -f "pubspec.yaml" ]; then
-            echo "Detected Flutter project at repo root"
             echo "WORKDIR=." >> $GITHUB_ENV
           elif [ -d "keepintouch" ] && [ -f "keepintouch/pubspec.yaml" ]; then
-            echo "Detected Flutter project in ./keepintouch"
             echo "WORKDIR=keepintouch" >> $GITHUB_ENV
           else
-            echo "Could not find pubspec.yaml at repo root or ./keepintouch" >&2
-            exit 1
+            echo "pubspec.yaml not found at repo root or ./keepintouch" >&2; exit 1
           fi
 
       - name: Setup Java
@@ -44,14 +45,21 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
         run: flutter pub get
 
-      - name: Analyze
+      - name: Build AAB (release)
         working-directory: ${{ env.WORKDIR }}
-        run: flutter analyze
+        run: flutter build appbundle --release --no-tree-shake-icons
 
-      - name: Run tests
+      - name: Build APK (release)
         working-directory: ${{ env.WORKDIR }}
-        run: flutter test --no-pub
+        run: flutter build apk --release --no-tree-shake-icons
 
-      - name: Build APK (debug)
-        working-directory: ${{ env.WORKDIR }}
-        run: flutter build apk --debug --no-tree-shake-icons
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.WORKDIR }}/build/app/outputs/flutter-apk/*.apk
+            ${{ env.WORKDIR }}/build/app/outputs/bundle/release/*.aab
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

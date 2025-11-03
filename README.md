@@ -52,7 +52,7 @@ Privacy
 - device_calendar + permission_handler for the optional read‑only overlay
 
 ## Credits
-Built by Nassi, with GitHub Copilot assisting on implementation, UX polish, and calendar integration.
+Built by Nassim, with GitHub Copilot assisting on implementation, UX polish, and calendar integration.
 
 ## License
 Choose a license (e.g., MIT) and add a LICENSE file to this folder.
