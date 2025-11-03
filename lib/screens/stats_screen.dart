@@ -55,7 +55,7 @@ class _StatsScreenState extends State<StatsScreen> {
              SUM(CASE WHEN initiator!='me' THEN 1 ELSE 0 END) AS theirs,
              MAX(at) AS lastAt
       FROM interaction i
-      ${where}
+  $where
       GROUP BY i.personId
       ORDER BY cnt DESC, lastAt DESC
       LIMIT 50
@@ -141,7 +141,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 const SizedBox(width: 16),
                 _metric('I initiated', '${d.mine} ($minePct%)'),
                 const SizedBox(width: 16),
-                _metric('They initiated', '${d.theirs} (${theirsPct}%)'),
+                _metric('They initiated', '${d.theirs} ($theirsPct%)'),
               ],
             ),
           ],

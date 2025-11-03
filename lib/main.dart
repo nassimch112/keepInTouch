@@ -187,7 +187,7 @@ class _AppState extends State<App> {
               ),
               home: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) async {
+  onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
           // If not on Home tab, go back to Home instead of exiting
           if (_index != 0) {

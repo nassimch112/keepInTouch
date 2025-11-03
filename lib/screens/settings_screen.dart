@@ -98,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onChanged: (v) async {
             if (v) {
               final ok = await DeviceCalendarService.ensurePermissions();
-              if (!mounted) return;
+              if (!context.mounted) return;
               if (ok) {
                 setState(() => _deviceCalendar = true);
               } else {
