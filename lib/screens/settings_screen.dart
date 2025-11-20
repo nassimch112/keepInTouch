@@ -214,7 +214,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _showAbout() async {
     if (!mounted) return;
     final repoUrl = const String.fromEnvironment('APP_REPO_URL', defaultValue: 'https://github.com/nassimch112/keepInTouch');
-    final version = const String.fromEnvironment('APP_VERSION', defaultValue: '1.0.0+1');
+    final version = const String.fromEnvironment('APP_VERSION', defaultValue: '1.0.2');
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
