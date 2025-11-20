@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Bump Version"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -56,9 +59,22 @@ jobs:
       - name: Determine tag name
         id: tag
         run: |
-          VERSION=$(grep '^version:' "$WORKDIR/pubspec.yaml" | sed 's/version: //; s/+.*$//')
-          echo "TAG_NAME=v$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+            echo "Detected tag from ref: $TAG_NAME"
+          else
+            # Try to use the most recent v* tag (for workflow_run), else fall back to pubspec.yaml
+            if git tag --list 'v*' --sort=-creatordate | head -n 1 | grep -q .; then
+              TAG_NAME=$(git tag --list 'v*' --sort=-creatordate | head -n 1)
+              echo "Detected latest tag: $TAG_NAME"
+            else
+              VERSION=$(grep '^version:' "$WORKDIR/pubspec.yaml" | sed 's/version: //; s/+.*$//')
+              TAG_NAME="v$VERSION"
+              echo "Falling back to pubspec version: $TAG_NAME"
+            fi
+          fi
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
 
       - name: Create tag if missing (manual run)
         if: github.event_name == 'workflow_dispatch'
